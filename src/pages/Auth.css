@@ -1,0 +1,120 @@
+/* Auth.css - Minimalista, responsivo, paleta azul/cinza */
+
+:root {
+  --primary: #3b82f6;
+  --primary-dark: #2563eb;
+  --bg: #f8fafc;
+  --bg-card: #fff;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --error: #ef4444;
+  --border: #e5e7eb;
+  --radius: 1rem;
+}
+
+.auth-container {
+  max-width: 370px;
+  margin: 3.5rem auto 0 auto;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(33, 150, 243, 0.09);
+  padding: 2.5rem 2rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.auth-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a237e;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.auth-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.auth-form label {
+  font-size: 1rem;
+  color: #1a237e;
+  margin-bottom: 0.3rem;
+  font-weight: 500;
+}
+
+.auth-form input {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border: 1.5px solid #e3e9f7;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #f5faff;
+  color: #1a237e;
+  transition: border 0.2s;
+}
+
+.auth-form input:focus {
+  border: 1.5px solid #2196f3;
+  outline: none;
+  background: #fff;
+}
+
+.auth-btn {
+  width: 100%;
+  padding: 0.8rem 0;
+  background: linear-gradient(90deg, #2196f3 60%, #64b5f6 100%);
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.07);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.auth-btn:hover {
+  background: linear-gradient(90deg, #1976d2 60%, #2196f3 100%);
+  box-shadow: 0 4px 16px rgba(33, 150, 243, 0.13);
+}
+
+.auth-link {
+  color: #2196f3;
+  text-decoration: none;
+  font-size: 0.98rem;
+  margin-top: 1.2rem;
+  text-align: center;
+  display: block;
+  transition: color 0.2s;
+}
+
+.auth-link:hover {
+  color: #1976d2;
+  text-decoration: underline;
+}
+
+.auth-error {
+  color: #e53935;
+  background: #fff3f3;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.98rem;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .auth-container {
+    max-width: 98vw;
+    padding: 1.2rem 0.5rem 1.5rem 0.5rem;
+    border-radius: 10px;
+  }
+  .auth-title {
+    font-size: 1.1rem;
+  }
+} 

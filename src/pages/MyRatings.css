@@ -1,0 +1,359 @@
+/* MyRatings.css - Minimalista, responsivo, paleta azul/cinza */
+
+.my-ratings {
+  padding: 1rem;
+  max-width: 900px;
+  margin: 0 auto;
+  background: linear-gradient(120deg, #e0e7ef 0%, #f8fafc 100%);
+  min-height: 100vh;
+}
+
+.ratings-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding: 1.5rem 0;
+  background: #fff;
+  border-radius: 1rem;
+}
+
+.ratings-header h1 {
+  color: #1e293b;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  background: none;
+}
+
+.ratings-header p {
+  color: #64748b;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.add-rating-btn {
+  background: #3b82f6;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-size: 1rem;
+}
+
+.add-rating-btn:hover {
+  background: #2563eb;
+}
+
+.empty-ratings {
+  text-align: center;
+  padding: 2rem 1rem;
+  background: #fff;
+  border-radius: 1rem;
+  border: 1px solid #e5e7eb;
+  color: #64748b;
+}
+
+.empty-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.empty-ratings h3 {
+  color: #1e293b;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.empty-ratings p {
+  color: #64748b;
+  margin-bottom: 1rem;
+}
+
+.ratings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+
+.rating-card {
+  background: #fff;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  box-shadow: none;
+  border: 1px solid #e5e7eb;
+  transition: box-shadow 0.2s;
+  position: relative;
+}
+
+.rating-card:hover {
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.08);
+}
+
+.rating-movie-info {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.rating-movie-poster {
+  width: 60px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  box-shadow: none;
+  flex-shrink: 0;
+}
+
+.rating-movie-details {
+  flex: 1;
+}
+
+.rating-movie-details h3 {
+  color: #1e293b;
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.3;
+}
+
+.rating-stars {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.stars-display {
+  display: flex;
+  gap: 2px;
+}
+
+.stars-display .filled {
+  color: #fbbf24;
+}
+
+.stars-display svg {
+  color: #e2e8f0;
+}
+
+.rating-value {
+  color: #64748b;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.rating-comment {
+  color: #64748b;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0.5rem 0;
+  font-style: italic;
+}
+
+.rating-date {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #94a3b8;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}
+
+.rating-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 0.7rem;
+}
+
+.edit-btn,
+.delete-btn {
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.edit-btn {
+  color: #3b82f6;
+}
+
+.edit-btn:hover {
+  background: #e0e7ef;
+  color: #2563eb;
+}
+
+.delete-btn {
+  color: #ef4444;
+}
+
+.delete-btn:hover {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  background: #fff;
+  border-radius: 1rem;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #e5e7eb;
+  border-top: 3px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .my-ratings {
+    padding: 0.5rem;
+  }
+  .ratings-header {
+    padding: 1rem 0.5rem;
+    margin-bottom: 1.2rem;
+  }
+  .ratings-header h1 {
+    font-size: 1.25rem;
+  }
+  .ratings-grid {
+    grid-template-columns: 1fr;
+    gap: 0.7rem;
+  }
+  .rating-card {
+    padding: 0.7rem;
+  }
+  .rating-movie-info {
+    gap: 0.5rem;
+  }
+  .rating-movie-poster {
+    width: 40px;
+    height: 60px;
+  }
+  .empty-ratings {
+    padding: 1.2rem 0.5rem;
+  }
+  .empty-icon {
+    font-size: 1.5rem;
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.myratings-container {
+  max-width: 800px;
+  margin: 2.5rem auto 0 auto;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(33, 150, 243, 0.09);
+  padding: 2.5rem 2rem 2rem 2rem;
+}
+
+.myratings-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a237e;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.myratings-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+.myrating-card {
+  background: #f5faff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.07);
+  padding: 1.2rem 1.1rem;
+  min-width: 220px;
+  max-width: 270px;
+  flex: 1 1 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border: 1.5px solid #e3e9f7;
+}
+
+.myrating-movie-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1a237e;
+  margin-bottom: 0.3rem;
+}
+
+.myrating-rating {
+  color: #2196f3;
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 0.2rem;
+}
+
+.myrating-comment {
+  color: #333;
+  font-size: 0.98rem;
+  margin-bottom: 0.5rem;
+}
+
+.myrating-date {
+  color: #90caf9;
+  font-size: 0.85rem;
+  margin-top: auto;
+  align-self: flex-end;
+}
+
+.myrating-remove-btn {
+  background: #fff;
+  color: #e53935;
+  border: 1.2px solid #e53935;
+  border-radius: 6px;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 0.7rem;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+}
+
+.myrating-remove-btn:hover {
+  background: #e53935;
+  color: #fff;
+  border: 1.2px solid #e53935;
+}
+
+@media (max-width: 600px) {
+  .myratings-container {
+    max-width: 98vw;
+    padding: 1.2rem 0.5rem 1.5rem 0.5rem;
+    border-radius: 10px;
+  }
+  .myratings-title {
+    font-size: 1.2rem;
+  }
+  .myrating-card {
+    min-width: 90vw;
+    max-width: 98vw;
+    padding: 1rem 0.5rem;
+  }
+} 
