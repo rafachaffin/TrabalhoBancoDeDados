@@ -79,110 +79,108 @@ const Register = ({ onLogin }) => {
 
   return (
     <div className="auth-container">
-      <div className="auth-card">
-        <div className="auth-header">
-          <h1>Criar Conta</h1>
-          <p>Cadastre-se para salvar suas avaliações</p>
+      <div className="auth-header">
+        <h1>Criar Conta</h1>
+        <p>Cadastre-se para salvar suas avaliações</p>
+      </div>
+
+      {error && (
+        <div className="error-message">
+          {error}
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit} className="auth-form">
+        <div className="form-group">
+          <div className="input-wrapper">
+            <User size={20} className="input-icon" />
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="Seu nome completo"
+              required
+              className="auth-input"
+            />
+          </div>
         </div>
 
-        {error && (
-          <div className="error-message">
-            {error}
+        <div className="form-group">
+          <div className="input-wrapper">
+            <Mail size={20} className="input-icon" />
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Seu email"
+              required
+              className="auth-input"
+            />
           </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="auth-form">
-          <div className="form-group">
-            <div className="input-wrapper">
-              <User size={20} className="input-icon" />
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                placeholder="Seu nome completo"
-                required
-                className="auth-input"
-              />
-            </div>
-          </div>
-
-          <div className="form-group">
-            <div className="input-wrapper">
-              <Mail size={20} className="input-icon" />
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="Seu email"
-                required
-                className="auth-input"
-              />
-            </div>
-          </div>
-
-          <div className="form-group">
-            <div className="input-wrapper">
-              <Lock size={20} className="input-icon" />
-              <input
-                type={showPassword ? 'text' : 'password'}
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                placeholder="Sua senha (mín. 6 caracteres)"
-                required
-                className="auth-input"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="password-toggle"
-              >
-                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-              </button>
-            </div>
-          </div>
-
-          <div className="form-group">
-            <div className="input-wrapper">
-              <Lock size={20} className="input-icon" />
-              <input
-                type={showConfirmPassword ? 'text' : 'password'}
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                placeholder="Confirme sua senha"
-                required
-                className="auth-input"
-              />
-              <button
-                type="button"
-                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="password-toggle"
-              >
-                {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-              </button>
-            </div>
-          </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className={`auth-button ${loading ? 'loading' : ''}`}
-          >
-            {loading ? 'Criando conta...' : 'Criar Conta'}
-          </button>
-        </form>
-
-        <div className="auth-footer">
-          <p>
-            Já tem uma conta?{' '}
-            <Link to="/login" className="auth-link">
-              Faça login
-            </Link>
-          </p>
         </div>
+
+        <div className="form-group">
+          <div className="input-wrapper">
+            <Lock size={20} className="input-icon" />
+            <input
+              type={showPassword ? 'text' : 'password'}
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="Sua senha (mín. 6 caracteres)"
+              required
+              className="auth-input"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="password-toggle"
+            >
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
+          </div>
+        </div>
+
+        <div className="form-group">
+          <div className="input-wrapper">
+            <Lock size={20} className="input-icon" />
+            <input
+              type={showConfirmPassword ? 'text' : 'password'}
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              placeholder="Confirme sua senha"
+              required
+              className="auth-input"
+            />
+            <button
+              type="button"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              className="password-toggle"
+            >
+              {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          disabled={loading}
+          className={`auth-button ${loading ? 'loading' : ''}`}
+        >
+          {loading ? 'Criando conta...' : 'Criar Conta'}
+        </button>
+      </form>
+
+      <div className="auth-footer">
+        <p>
+          Já tem uma conta?{' '}
+          <Link to="/login" className="auth-link">
+            Faça login
+          </Link>
+        </p>
       </div>
     </div>
   )
