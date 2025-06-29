@@ -1,0 +1,13 @@
+Páginas com problemas:
+my-ratings
+add-rating-btn
+
+Falta:
+Uma página de perfil
+
+Embelezar:
+Página de login
+Página de cadastro
+
+Acrescentar:
+Randomização
