@@ -29,7 +29,7 @@ const RatingModal = ({ movie, isOpen, onClose, onSaveRating, currentRating = nul
       await onSaveRating({
         movieId: movie.id,
         movieTitle: movie.title,
-        moviePoster: movie.poster,
+        moviePoster: movie.poster || movie.poster_path,
         rating,
         comment,
         date: new Date().toISOString()
@@ -83,35 +83,63 @@ const RatingModal = ({ movie, isOpen, onClose, onSaveRating, currentRating = nul
 
         <div className="rating-section">
           <label className="rating-label">Sua avaliação:</label>
-          <div className="stars-container">
-            {[1, 2, 3, 4, 5].map((star) => (
-              <button
-                key={star}
-                className={`star-button ${star <= (hoveredStar || rating) ? 'filled' : ''}`}
-                onClick={() => handleStarClick(star)}
-                onMouseEnter={() => handleStarHover(star)}
-                onMouseLeave={handleStarLeave}
-              >
-                <Star size={32} />
-              </button>
-            ))}
+          <div className="rating-content">
+            <div className="poster-miniature">
+              <img 
+                src={movie.poster} 
+                alt={movie.title} 
+                className="mini-poster"
+                onError={(e) => {
+                  e.target.src = 'https://via.placeholder.com/60x90/cccccc/666666?text=Sem+Imagem'
+                }}
+              />
+            </div>
+            <div className="rating-stars-section">
+              <div className="stars-container">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <button
+                    key={star}
+                    className={`star-button ${star <= (hoveredStar || rating) ? 'filled' : ''}`}
+                    onClick={() => handleStarClick(star)}
+                    onMouseEnter={() => handleStarHover(star)}
+                    onMouseLeave={handleStarLeave}
+                  >
+                    <Star size={32} />
+                  </button>
+                ))}
+              </div>
+              <p className="rating-text">
+                {rating > 0 ? `${rating} estrela${rating > 1 ? 's' : ''}` : 'Selecione uma avaliação'}
+              </p>
+            </div>
           </div>
-          <p className="rating-text">
-            {rating > 0 ? `${rating} estrela${rating > 1 ? 's' : ''}` : 'Selecione uma avaliação'}
-          </p>
         </div>
 
         <div className="comment-section">
-          <label className="comment-label">Comentário (opcional):</label>
-          <textarea
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            placeholder="Compartilhe sua opinião sobre o filme..."
-            className="comment-textarea"
-            rows="4"
-            maxLength="500"
-          />
-          <span className="char-count">{comment.length}/500</span>
+          <label className="comment-label">Crítica (opcional):</label>
+          <div className="comment-content">
+            <div className="poster-miniature">
+              <img 
+                src={movie.poster} 
+                alt={movie.title} 
+                className="mini-poster"
+                onError={(e) => {
+                  e.target.src = 'https://via.placeholder.com/60x90/cccccc/666666?text=Sem+Imagem'
+                }}
+              />
+            </div>
+            <div className="comment-textarea-container">
+              <textarea
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                placeholder="Compartilhe sua opinião sobre o filme..."
+                className="comment-textarea"
+                rows="4"
+                maxLength="500"
+              />
+              <span className="char-count">{comment.length}/500</span>
+            </div>
+          </div>
         </div>
 
         <div className="rating-modal-actions">

@@ -12,6 +12,7 @@ import MyRatings from './pages/MyRatings'
 import Profile from './pages/Profile'
 import Register from './pages/Register'
 import Search from './pages/Search'
+import AddRating from './pages/AddRating'
 import './App.css'
 
 // Componente interno que usa o contexto
@@ -109,6 +110,19 @@ const AppContent = () => {
                 <div className="auth-required">
                   <h2>Login Necessário</h2>
                   <p>Faça login para acessar seu perfil</p>
+                </div>
+              )
+            } 
+          />
+          <Route 
+            path="/add-rating" 
+            element={
+              currentUser ? (
+                <AddRating onSaveRating={saveRating} />
+              ) : (
+                <div className="auth-required">
+                  <h2>Login Necessário</h2>
+                  <p>Faça login para adicionar avaliações</p>
                 </div>
               )
             } 

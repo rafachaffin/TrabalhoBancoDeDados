@@ -1,5 +1,6 @@
 import { Star, Edit, Trash2, Calendar } from 'lucide-react'
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import RatingModal from '../components/RatingModal'
 import './MyRatings.css'
@@ -10,6 +11,7 @@ const MyRatings = ({ currentUser }) => {
   const [selectedRating, setSelectedRating] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingRating, setEditingRating] = useState(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (currentUser) {
@@ -112,7 +114,7 @@ const MyRatings = ({ currentUser }) => {
       <div className="ratings-header">
         <h1>Minhas Avaliações</h1>
         <p>Gerencie suas avaliações de filmes</p>
-        <button className="add-rating-btn" onClick={handleOpenModal}>
+        <button className="add-rating-btn" onClick={() => navigate('/add-rating')}>
           Adicionar Avaliação
         </button>
       </div>
@@ -122,7 +124,7 @@ const MyRatings = ({ currentUser }) => {
           <div className="empty-icon">⭐</div>
           <h3>Nenhuma avaliação ainda</h3>
           <p>Comece avaliando seus filmes favoritos!</p>
-          <button className="add-rating-btn" onClick={handleOpenModal}>
+          <button className="add-rating-btn" onClick={() => navigate('/add-rating')}>
             Fazer Primeira Avaliação
           </button>
         </div>

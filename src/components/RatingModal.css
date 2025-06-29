@@ -114,6 +114,28 @@
   font-size: 1rem;
 }
 
+.rating-content {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.poster-miniature {
+  flex-shrink: 0;
+}
+
+.mini-poster {
+  width: 60px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.rating-stars-section {
+  flex: 1;
+}
+
 .stars-container {
   display: flex;
   gap: 8px;
@@ -161,6 +183,16 @@
   color: #2d3748;
   font-weight: 600;
   font-size: 1rem;
+}
+
+.comment-content {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.comment-textarea-container {
+  flex: 1;
 }
 
 .comment-textarea {
@@ -262,6 +294,16 @@
   .rating-section,
   .comment-section {
     padding: 0 20px 20px 20px;
+  }
+  
+  .rating-content,
+  .comment-content {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .poster-miniature {
+    align-self: center;
   }
   
   .rating-modal-actions {
