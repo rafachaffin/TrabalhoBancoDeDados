@@ -9,6 +9,7 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import MovieDetail from './pages/MovieDetail'
 import MyRatings from './pages/MyRatings'
+import Profile from './pages/Profile'
 import Register from './pages/Register'
 import Search from './pages/Search'
 import './App.css'
@@ -95,6 +96,19 @@ const AppContent = () => {
                 <div className="auth-required">
                   <h2>Login Necessário</h2>
                   <p>Faça login para ver suas avaliações</p>
+                </div>
+              )
+            } 
+          />
+          <Route 
+            path="/profile" 
+            element={
+              currentUser ? (
+                <Profile currentUser={currentUser} onLogout={logout} />
+              ) : (
+                <div className="auth-required">
+                  <h2>Login Necessário</h2>
+                  <p>Faça login para acessar seu perfil</p>
                 </div>
               )
             } 

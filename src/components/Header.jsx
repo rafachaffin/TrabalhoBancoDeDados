@@ -39,10 +39,14 @@ const Header = ({ currentUser, onLogout }) => {
 
           {currentUser ? (
             <div className="user-menu">
-              <div className="user-info">
-                <User size={16} />
-                <span className="user-name">{currentUser.name}</span>
-              </div>
+              <Link 
+                to="/profile" 
+                className={`nav-link ${location.pathname === '/profile' ? 'active' : ''}`}
+                title="Meu Perfil"
+              >
+                <User size={20} />
+                <span>{currentUser.name}</span>
+              </Link>
               <button className="logout-btn" onClick={onLogout} title="Sair">
                 <LogOut size={16} />
               </button>

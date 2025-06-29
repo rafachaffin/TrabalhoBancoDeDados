@@ -1,9 +1,10 @@
 import { Eye, EyeOff, Mail, Lock, User } from 'lucide-react'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useAuth } from '../contexts/AuthContext'
 import './Auth.css'
 
-const Login = ({ onLogin }) => {
+const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -12,6 +13,7 @@ const Login = ({ onLogin }) => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const navigate = useNavigate()
+  const { login } = useAuth()
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -46,10 +48,8 @@ const Login = ({ onLogin }) => {
         throw new Error(data.error || 'Erro ao fazer login')
       }
 
-      // Salvar dados do usuário logado
-      localStorage.setItem('currentUser', JSON.stringify(data.user))
-      
-      // onLogin(data.user) // Removido para evitar erro
+      // Usar a função login do contexto
+      login(data.user)
       navigate('/')
     } catch (err) {
       setError(err.message || 'Erro ao fazer login. Tente novamente.')

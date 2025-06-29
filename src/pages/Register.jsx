@@ -1,9 +1,10 @@
 import { Eye, EyeOff, Mail, Lock, User } from 'lucide-react'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useAuth } from '../contexts/AuthContext'
 import './Auth.css'
 
-const Register = ({ onLogin }) => {
+const Register = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -15,6 +16,7 @@ const Register = ({ onLogin }) => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const navigate = useNavigate()
+  const { login } = useAuth()
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -63,8 +65,8 @@ const Register = ({ onLogin }) => {
         throw new Error(data.error || 'Erro ao criar conta')
       }
 
-      // Salvar dados do usuário logado
-      localStorage.setItem('currentUser', JSON.stringify(data.user))
+      // Usar a função login do contexto
+      login(data.user)
 
       // Inicializar avaliações do usuário
       localStorage.setItem(`ratings_${data.user.id}`, JSON.stringify([]))

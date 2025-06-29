@@ -8,6 +8,7 @@ Uma página de perfil
 Embelezar:
 Página de login
 Página de cadastro
+FEITO
 
 Acrescentar:
 Randomização
