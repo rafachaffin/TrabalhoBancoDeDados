@@ -138,6 +138,7 @@ const AppContent = () => {
           onClose={handleCloseRatingModal}
           onSaveRating={handleSaveRating}
           currentRating={getUserRating(selectedMovie.id)}
+          moviePoster={getImageUrl(selectedMovie.poster_path)}
         />
       )}
     </div>
@@ -155,6 +156,12 @@ function App() {
       </AuthProvider>
     </ErrorBoundary>
   )
+}
+
+function getImageUrl(posterPath) {
+  if (!posterPath) return 'https://via.placeholder.com/80x120/cccccc/666666?text=Sem+Imagem';
+  if (posterPath.startsWith('http')) return posterPath;
+  return `https://image.tmdb.org/t/p/w500${posterPath}`;
 }
 
 export default App 

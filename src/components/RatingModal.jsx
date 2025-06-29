@@ -68,7 +68,7 @@ const RatingModal = ({ movie, isOpen, onClose, onSaveRating, currentRating = nul
 
         <div className="movie-info">
           <img 
-            src={movie.poster} 
+            src={movie.poster || movie.poster_path} 
             alt={movie.title} 
             className="movie-poster"
             onError={(e) => {
@@ -86,7 +86,7 @@ const RatingModal = ({ movie, isOpen, onClose, onSaveRating, currentRating = nul
           <div className="rating-content">
             <div className="poster-miniature">
               <img 
-                src={movie.poster} 
+                src={movie.poster || movie.poster_path} 
                 alt={movie.title} 
                 className="mini-poster"
                 onError={(e) => {
@@ -120,7 +120,7 @@ const RatingModal = ({ movie, isOpen, onClose, onSaveRating, currentRating = nul
           <div className="comment-content">
             <div className="poster-miniature">
               <img 
-                src={movie.poster} 
+                src={movie.poster || movie.poster_path} 
                 alt={movie.title} 
                 className="mini-poster"
                 onError={(e) => {

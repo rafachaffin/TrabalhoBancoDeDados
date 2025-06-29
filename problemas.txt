@@ -4,6 +4,7 @@ add-rating-btn
 
 Falta:
 Uma página de perfil
+FEITO
 
 Embelezar:
 Página de login
