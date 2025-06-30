@@ -595,6 +595,34 @@ class DatabaseService {
     const users = await this.db.query(query, [email, hashedPassword]);
     return users[0] || null;
   }
+
+  /**
+   * Busca avaliações de um usuário
+   * @param {string} apelido - Apelido do usuário
+   * @returns {Promise<Array>} Lista de avaliações
+   */
+  async getUserReviews(apelido) {
+    try {
+      const query = `
+        SELECT 
+          a.ID_Filme as movieId,
+          f.Titulo as movieTitle,
+          f.Url_Poster as moviePoster,
+          a.Nota as rating,
+          a.Review as comment,
+          a.Data_Avaliacao as date
+        FROM Avalia a
+        JOIN Filme f ON a.ID_Filme = f.ID_Filme
+        WHERE a.Apelido = ?
+        ORDER BY a.Data_Avaliacao DESC
+      `;
+      const reviews = await this.db.query(query, [apelido]);
+      return reviews;
+    } catch (error) {
+      console.error('Erro ao buscar avaliações do usuário:', error);
+      throw error;
+    }
+  }
 }
 
 export default DatabaseService;

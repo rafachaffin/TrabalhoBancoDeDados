@@ -3,7 +3,7 @@ import { Star, X } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import './RatingModal.css'
 
-const RatingModal = ({ movie, isOpen, onClose, addMovieReview, currentRating = null }) => {
+const RatingModal = ({ movie, isOpen, onClose, onSaveRating, currentUser, currentRating = null }) => {
   const [rating, setRating] = useState(currentRating?.rating || 0)
   const [comment, setComment] = useState(currentRating?.comment || '')
   const [hoveredStar, setHoveredStar] = useState(0)
@@ -24,18 +24,10 @@ const RatingModal = ({ movie, isOpen, onClose, addMovieReview, currentRating = n
       alert('Por favor, selecione uma avaliação')
       return
     }
-
     setLoading(true)
     try {
-      await addMovieReview({
-        movieId: movie.id,
-        movieTitle: movie.title,
-        moviePoster: movie.poster || movie.poster_path,
-        rating,
-        comment,
-        date: new Date().toISOString()
-      })
-      onClose()
+      await addMovieReview(movie.id, currentUser.id, rating, comment);
+      onClose();
     } catch (error) {
       console.error('Erro ao salvar avaliação:', error)
     } finally {

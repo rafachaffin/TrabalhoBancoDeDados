@@ -42,5 +42,12 @@ export default function movieRoutes(dbService) {
     res.json(reviews)
   }))
 
+  // Buscar avaliações de um usuário
+  router.get('/user/:apelido/reviews', asyncHandler(async (req, res) => {
+    const { apelido } = req.params;
+    const reviews = await dbService.getUserReviews(apelido);
+    res.json(reviews);
+  }))
+
   return router
 } 

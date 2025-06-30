@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 
 import RatingModal from '../components/RatingModal'
 import './MyRatings.css'
-import { getMovieReviews, addMovieReview } from '../services/api'
+import { getUserReviews, addMovieReview } from '../services/api'
 
 const MyRatings = ({ currentUser }) => {
   const [ratings, setRatings] = useState([])
@@ -22,16 +22,9 @@ const MyRatings = ({ currentUser }) => {
 
   const loadRatings = async () => {
     try {
-      // Buscar avaliações do backend para o usuário logado
-      // Supondo que getMovieReviews pode ser adaptado para buscar por usuário
-      // Aqui, para exemplo, buscar todas avaliações e filtrar pelo apelido
-      // (Ideal: criar endpoint /api/users/:apelido/reviews no backend)
-      // Por enquanto, buscar todos os filmes e pegar avaliações do usuário
-      // (Ajuste conforme sua API)
-      // Exemplo: const userReviews = await getUserReviews(currentUser.id)
       setLoading(true)
-      // Aqui, como exemplo, não implementado o endpoint de reviews por usuário
-      setRatings([])
+      const userReviews = await getUserReviews(currentUser.id)
+      setRatings(userReviews)
     } catch (error) {
       console.error('Erro ao carregar avaliações:', error)
     } finally {

@@ -192,5 +192,10 @@ export async function addMovieReview(movieId, apelido, nota, comentario) {
   return api.post(`/api/movies/${movieId}/reviews`, { apelido, nota, comentario });
 }
 
+export async function getUserReviews(apelido) {
+  const response = await api.get(`/api/movies/user/${apelido}/reviews`);
+  return response.data;
+}
+
 export { ApiError }
 export default api 
