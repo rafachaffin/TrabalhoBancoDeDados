@@ -134,7 +134,7 @@ const MyRatings = ({ currentUser }) => {
                   <h3>{rating.movieTitle}</h3>
                   <div className="rating-stars">
                     {renderStars(rating.rating)}
-                    <span className="rating-value">{rating.rating}/5</span>
+                    <span className="rating-value">{parseInt(rating.rating, 10)}/5</span>
                   </div>
                   {rating.comment && (
                     <p className="rating-comment">{rating.comment}</p>

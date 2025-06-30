@@ -99,6 +99,8 @@ const MovieDetail = ({
   }
 
   return (
+    
+    
     <div className="movie-detail">
       <Link to="/" className="back-button">
         <ArrowLeft size={24} />
@@ -130,28 +132,6 @@ const MovieDetail = ({
               </button>
             )}
           </div>
-
-          {/* Avaliação do usuário */}
-          {currentUser && userRating && (
-            <div className="user-rating-display">
-              <h4>Sua Avaliação</h4>
-              <div className="rating-info">
-                <div className="stars-display">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <Star
-                      key={star}
-                      size={16}
-                      className={star <= userRating.rating ? 'filled' : ''}
-                    />
-                  ))}
-                </div>
-                <span className="rating-value">{userRating.rating}/5</span>
-              </div>
-              {userRating.comment && (
-                <p className="rating-comment">"{userRating.comment}"</p>
-              )}
-            </div>
-          )}
         </div>
         
         <div className="movie-details">
@@ -222,11 +202,22 @@ const MovieDetail = ({
               <ul>
                 {reviews.map((review, idx) => (
                   <li key={idx} className="review-item">
-                    <div className="review-user">{review.usuario}</div>
-                    <div className="review-rating">
-                      {[1,2,3,4,5].map(star => (
-                        <Star key={star} size={16} className={star <= review.nota ? 'filled' : ''} />
-                      ))}
+                    <div className="review-header">
+                      <span className="review-user">{review.usuario}</span>
+                      <div className="review-rating">
+                        <div className="rating-info">
+                          <div className="stars-display">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                              <Star
+                                key={star}
+                                size={16}
+                                className={star <= Number(review.nota) ? 'filled' : ''}
+                              />
+                            ))}
+                          </div>
+                          <span className="rating-value">{parseInt(review.nota, 10)}/5</span>
+                        </div>
+                      </div>
                     </div>
                     {review.comentario && (
                       <div className="review-comment">{review.comentario}</div>

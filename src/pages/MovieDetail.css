@@ -125,7 +125,7 @@
 .rating-info {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: left;
   gap: var(--spacing-md);
   margin-bottom: var(--spacing-sm);
 }

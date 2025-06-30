@@ -155,6 +155,7 @@ export const movieService = {
     try {
       validateParams({ movieId }, ['movieId'])
       const response = await api.get(`/api/movies/${movieId}/reviews`)
+      console.log("OI OI OI OI OI OI",response.data);
       return response.data
     } catch (error) {
       throw error instanceof ApiError ? error : new ApiError('Erro ao buscar avaliações', null, error)
