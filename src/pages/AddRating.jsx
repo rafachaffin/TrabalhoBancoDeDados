@@ -38,6 +38,7 @@ const AddRating = ({ currentUser }) => {
   };
 
   const handleSave = async (e) => {
+    console.log('currentUser:', currentUser);
     e.preventDefault();
     if (!selectedMovie || rating === 0) {
       setError('Selecione um filme e uma nota!');

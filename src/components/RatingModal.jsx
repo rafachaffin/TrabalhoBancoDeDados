@@ -26,7 +26,17 @@ const RatingModal = ({ movie, isOpen, onClose, onSaveRating, currentUser, curren
     }
     setLoading(true)
     try {
-      await addMovieReview(movie.id, currentUser.id, rating, comment);
+
+      const movieId = movie?.id ?? null;
+
+      console.log('país do futebol nego currentUser:', currentUser);
+      const apelido = currentUser?.id ?? null;
+      console.log('ate gringo sambô currentUser:', currentUser);
+      console.log('segue o apelido supostamente preenchido:', apelido);
+
+      const nota = rating ?? null;
+      const comentario = comment !== undefined ? comment : null;
+      await addMovieReview(movieId, apelido, nota, comentario);
       onClose();
     } catch (error) {
       console.error('Erro ao salvar avaliação:', error)

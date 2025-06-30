@@ -138,6 +138,7 @@ const AppContent = () => {
           onClose={handleCloseRatingModal}
           onSaveRating={handleSaveRating}
           currentRating={getUserRating(selectedMovie.id)}
+          currentUser={currentUser}
           moviePoster={getImageUrl(selectedMovie.poster_path)}
         />
       )}

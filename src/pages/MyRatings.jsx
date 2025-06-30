@@ -180,6 +180,7 @@ const MyRatings = ({ currentUser }) => {
           onClose={handleCloseModal}
           onSaveRating={handleSaveRating}
           currentRating={editingRating}
+          currentUser={currentUser}
         />
       )}
     </div>

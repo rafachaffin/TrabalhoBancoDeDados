@@ -49,5 +49,13 @@ export default function movieRoutes(dbService) {
     res.json(reviews);
   }))
 
+  // Adicionar avaliação do filme
+  router.post('/:id/reviews', validateMovieId, asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const { apelido, nota, comentario } = req.body;
+    await dbService.addMovieReview(id, apelido, nota, comentario);
+    res.status(201).json({ message: 'Avaliação adicionada com sucesso!' });
+  }))
+
   return router
 } 

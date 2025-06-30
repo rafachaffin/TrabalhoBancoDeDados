@@ -623,6 +623,15 @@ class DatabaseService {
       throw error;
     }
   }
+
+  async addMovieReview(movieId, apelido, nota, comentario) {
+    console.log('addMovieReview params:', { movieId, apelido, nota, comentario });
+    const query = `
+      INSERT INTO Avalia (ID_Avaliacao, Nota, Review, Data_Avaliacao, ID_Filme, Apelido)
+      VALUES (UNIX_TIMESTAMP(NOW()), ?, ?, CURDATE(), ?, ?)
+    `;
+    await this.db.query(query, [nota, comentario, movieId, apelido]);
+  }
 }
 
 export default DatabaseService;
