@@ -68,9 +68,6 @@ const Register = () => {
       // Usar a função login do contexto
       login(data.user)
 
-      // Inicializar avaliações do usuário
-      localStorage.setItem(`ratings_${data.user.id}`, JSON.stringify([]))
-      
       navigate('/')
     } catch (err) {
       setError(err.message || 'Erro ao criar conta. Tente novamente.')

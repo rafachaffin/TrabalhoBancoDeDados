@@ -39,7 +39,7 @@ const AddRating = ({ currentUser }) => {
 
   const handleSave = async (e) => {
     
-    console.log('currentUser:', currentUser);
+    console.log(currentUser);
     
     e.preventDefault();
     if (!selectedMovie || rating === 0) {
@@ -47,11 +47,14 @@ const AddRating = ({ currentUser }) => {
       return;
     }
     try {
+      console.log("entrei dentro do try");
       await addMovieReview(selectedMovie.id, currentUser.id, rating, comment);
+      console.log("estou depois do addMovieReview");
       navigate('/my-ratings');
     } catch (err) {
       setError('Erro ao salvar avaliação.');
     }
+    
   };
 
   return (

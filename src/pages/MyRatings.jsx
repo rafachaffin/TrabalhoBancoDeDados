@@ -43,11 +43,6 @@ const MyRatings = ({ currentUser }) => {
     }
   }
 
-  const handleEditRating = (rating) => {
-    setEditingRating(rating)
-    setIsModalOpen(true)
-  }
-
   const handleDeleteRating = async (movieId) => {
     if (window.confirm('Tem certeza que deseja excluir esta avaliação?')) {
       try {
@@ -152,13 +147,6 @@ const MyRatings = ({ currentUser }) => {
               </div>
               
               <div className="rating-actions">
-                <button
-                  className="edit-btn"
-                  onClick={() => handleEditRating(rating)}
-                  title="Editar avaliação"
-                >
-                  <Edit size={16} />
-                </button>
                 <button
                   className="delete-btn"
                   onClick={() => handleDeleteRating(rating.movieId)}

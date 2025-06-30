@@ -71,11 +71,6 @@ export const AuthProvider = ({ children }) => {
     return userRatings[movieId] || null
   }, [userRatings])
 
-  // Obter todas as avaliações do usuário
-  const getAllUserRatings = useCallback(() => {
-    return Object.values(userRatings)
-  }, [userRatings])
-
   const value = {
     currentUser,
     userRatings,
@@ -84,7 +79,6 @@ export const AuthProvider = ({ children }) => {
     logout,
     saveRating,
     getUserRating,
-    getAllUserRatings,
     isAuthenticated: !!currentUser
   }
 

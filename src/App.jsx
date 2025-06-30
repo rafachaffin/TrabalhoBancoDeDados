@@ -118,7 +118,7 @@ const AppContent = () => {
             path="/add-rating" 
             element={
               currentUser ? (
-                <AddRating onSaveRating={saveRating} />
+                <AddRating currentUser={currentUser} />
               ) : (
                 <div className="auth-required">
                   <h2>Login Necessário</h2>

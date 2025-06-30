@@ -29,21 +29,11 @@ const Profile = ({ currentUser, onLogout }) => {
 
   const loadUserStats = async () => {
     try {
-      // Carregar estatísticas do usuário do localStorage
-      const userRatings = JSON.parse(localStorage.getItem(`ratings_${currentUser.id}`) || '[]')
-      
-      const totalRatings = userRatings.length
-      const averageRating = totalRatings > 0 
-        ? (userRatings.reduce((sum, rating) => sum + rating.rating, 0) / totalRatings).toFixed(1)
-        : 0
-
-      // Simular gêneros favoritos (em um projeto real, isso viria do backend)
-      const favoriteGenres = ['Ação', 'Drama', 'Comédia']
-      
+      // Simular estatísticas do usuário sem localStorage
       setUserStats({
-        totalRatings,
-        averageRating: parseFloat(averageRating),
-        favoriteGenres,
+        totalRatings: 0,
+        averageRating: 0,
+        favoriteGenres: ['Ação', 'Drama', 'Comédia'],
         joinDate: new Date().toLocaleDateString('pt-BR', {
           year: 'numeric',
           month: 'long',
