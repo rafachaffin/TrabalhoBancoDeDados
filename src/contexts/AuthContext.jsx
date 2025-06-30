@@ -22,7 +22,6 @@ export const AuthProvider = ({ children }) => {
       try {
         const user = JSON.parse(savedUser)
         setCurrentUser(user)
-        loadUserRatings(user.id)
       } catch (error) {
         console.error('Erro ao carregar usuário:', error)
         localStorage.removeItem('currentUser')
@@ -31,32 +30,15 @@ export const AuthProvider = ({ children }) => {
     setLoading(false)
   }, [])
 
-  // Carrega avaliações do usuário
-  const loadUserRatings = useCallback((userId) => {
-    try {
-      const ratings = JSON.parse(localStorage.getItem(`ratings_${userId}`) || '[]')
-      const ratingsMap = {}
-      ratings.forEach(rating => {
-        ratingsMap[rating.movieId] = rating
-      })
-      setUserRatings(ratingsMap)
-    } catch (error) {
-      console.error('Erro ao carregar avaliações:', error)
-      setUserRatings({})
-    }
-  }, [])
-
   // Login do usuário
   const login = useCallback((user) => {
     setCurrentUser(user)
     localStorage.setItem('currentUser', JSON.stringify(user))
-    loadUserRatings(user.id)
-  }, [loadUserRatings])
+  }, [])
 
   // Logout do usuário
   const logout = useCallback(() => {
     setCurrentUser(null)
-    setUserRatings({})
     localStorage.removeItem('currentUser')
   }, [])
 
@@ -67,25 +49,17 @@ export const AuthProvider = ({ children }) => {
     }
 
     try {
-      const userRatings = JSON.parse(localStorage.getItem(`ratings_${currentUser.id}`) || '[]')
-      
-      const existingRatingIndex = userRatings.findIndex(rating => rating.movieId === ratingData.movieId)
-      
-      if (existingRatingIndex >= 0) {
-        userRatings[existingRatingIndex] = ratingData
-      } else {
-        userRatings.push(ratingData)
-      }
-      
-      localStorage.setItem(`ratings_${currentUser.id}`, JSON.stringify(userRatings))
-      
-      const ratingsMap = {}
-      userRatings.forEach(rating => {
-        ratingsMap[rating.movieId] = rating
+      const response = await fetch('/api/ratings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(ratingData)
       })
-      setUserRatings(ratingsMap)
-      
-      return ratingData
+
+      const data = await response.json()
+      setUserRatings(data.ratings)
+      return data.ratings
     } catch (error) {
       console.error('Erro ao salvar avaliação:', error)
       throw error

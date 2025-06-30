@@ -197,5 +197,9 @@ export async function getUserReviews(apelido) {
   return response.data;
 }
 
+export async function deleteMovieReview(movieId, apelido) {
+  return api.delete(`/api/movies/${movieId}/reviews/${apelido}`);
+}
+
 export { ApiError }
 export default api 

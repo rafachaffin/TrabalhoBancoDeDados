@@ -57,5 +57,12 @@ export default function movieRoutes(dbService) {
     res.status(201).json({ message: 'Avaliação adicionada com sucesso!' });
   }))
 
+  // Excluir avaliação do filme
+  router.delete('/:id/reviews/:apelido', validateMovieId, asyncHandler(async (req, res) => {
+    const { id, apelido } = req.params;
+    await dbService.deleteMovieReview(id, apelido);
+    res.status(200).json({ message: 'Avaliação removida com sucesso!' });
+  }))
+
   return router
 } 

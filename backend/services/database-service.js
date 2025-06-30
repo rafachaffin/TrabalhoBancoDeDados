@@ -632,6 +632,16 @@ class DatabaseService {
     `;
     await this.db.query(query, [nota, comentario, movieId, apelido]);
   }
+
+  async deleteMovieReview(movieId, apelido) {
+    try {
+      const query = 'DELETE FROM Avalia WHERE ID_Filme = ? AND Apelido = ?';
+      await this.db.query(query, [movieId, apelido]);
+    } catch (error) {
+      console.error('Erro ao deletar avaliação:', error);
+      throw error;
+    }
+  }
 }
 
 export default DatabaseService;

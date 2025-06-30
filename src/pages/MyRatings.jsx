@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 
 import RatingModal from '../components/RatingModal'
 import './MyRatings.css'
-import { getUserReviews, addMovieReview } from '../services/api'
+import { getUserReviews, addMovieReview, deleteMovieReview } from '../services/api'
 
 const MyRatings = ({ currentUser }) => {
   const [ratings, setRatings] = useState([])
@@ -48,11 +48,15 @@ const MyRatings = ({ currentUser }) => {
     setIsModalOpen(true)
   }
 
-  const handleDeleteRating = (movieId) => {
+  const handleDeleteRating = async (movieId) => {
     if (window.confirm('Tem certeza que deseja excluir esta avaliação?')) {
-      const updatedRatings = ratings.filter(rating => rating.movieId !== movieId)
-      localStorage.setItem(`ratings_${currentUser.id}`, JSON.stringify(updatedRatings))
-      setRatings(updatedRatings)
+      try {
+        await deleteMovieReview(movieId, currentUser.id);
+        await loadRatings();
+      } catch (error) {
+        console.error('Erro ao excluir avaliação:', error);
+        alert('Erro ao excluir avaliação. Tente novamente.');
+      }
     }
   }
 
