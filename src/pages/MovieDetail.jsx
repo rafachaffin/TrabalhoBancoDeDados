@@ -98,6 +98,8 @@ const MovieDetail = ({
     );
   }
 
+  console.log("movie: ", movie);
+
   return (
     
     
@@ -138,11 +140,8 @@ const MovieDetail = ({
           <h1 className="movie-title">{movie.title}</h1>
           <div className="movie-meta">
             <div className="movie-rating">
-              <Star size={20} fill="currentColor" />
-              <span>{movie.vote_average?.toFixed(1) || 'N/A'}</span>
-              {movie.vote_count && (
-                <span className="vote-count">({movie.vote_count} votos)</span>
-              )}
+              dsadas
+              
             </div>
             <div className="movie-year">
               <Calendar size={20} />

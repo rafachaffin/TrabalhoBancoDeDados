@@ -122,14 +122,21 @@ const MyRatings = ({ currentUser }) => {
           {ratings.map((rating) => (
             <div key={rating.movieId} className="rating-card">
               <div className="rating-movie-info">
-                <img
-                  src={rating.moviePoster}
-                  alt={rating.movieTitle}
-                  className="rating-movie-poster"
-                  onError={(e) => {
-                    e.target.src = 'https://via.placeholder.com/80x120/cccccc/666666?text=Sem+Imagem'
-                  }}
-                />
+                <a
+                  href={`/movie/${rating.movieId}`}
+                  className="rating-movie-poster-link"
+                  tabIndex={0}
+                  title={`Ver detalhes de ${rating.movieTitle}`}
+                >
+                  <img
+                    src={rating.moviePoster}
+                    alt={rating.movieTitle}
+                    className="rating-movie-poster"
+                    onError={(e) => {
+                      e.target.src = 'https://via.placeholder.com/80x120/cccccc/666666?text=Sem+Imagem'
+                    }}
+                  />
+                </a>
                 <div className="rating-movie-details">
                   <h3>{rating.movieTitle}</h3>
                   <div className="rating-stars">

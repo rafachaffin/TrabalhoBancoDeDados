@@ -357,4 +357,15 @@
     max-width: 98vw;
     padding: 1rem 0.5rem;
   }
+}
+
+.rating-movie-poster-link {
+  display: inline-block;
+  border-radius: 0.5rem;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.rating-movie-poster-link:hover, .rating-movie-poster-link:focus {
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.18);
+  transform: scale(1.06);
+  outline: none;
 } 

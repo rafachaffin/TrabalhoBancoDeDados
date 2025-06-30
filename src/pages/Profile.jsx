@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { User, Mail, Calendar, Star, LogOut, Edit, Camera } from 'lucide-react'
 import './Profile.css'
+import { getUserReviews } from '../services/api'
 
 const Profile = ({ currentUser, onLogout }) => {
   const navigate = useNavigate()
@@ -29,12 +30,34 @@ const Profile = ({ currentUser, onLogout }) => {
 
   const loadUserStats = async () => {
     try {
-      // Simular estatísticas do usuário sem localStorage
+      const reviews = await getUserReviews(currentUser.id)
+      const totalRatings = reviews.length
+      const averageRating = totalRatings > 0
+        ? (reviews.reduce((sum, r) => sum + Number(r.rating), 0) / totalRatings).toFixed(2)
+        : 0
+
+      // Gêneros favoritos (contagem dos gêneros mais avaliados)
+      const genreCount = {}
+      reviews.forEach(r => {
+        if (r.genres && Array.isArray(r.genres)) {
+          r.genres.forEach(g => {
+            genreCount[g.name] = (genreCount[g.name] || 0) + 1
+          })
+        } else if (r.genre) {
+          // fallback se vier só um gênero
+          genreCount[r.genre] = (genreCount[r.genre] || 0) + 1
+        }
+      })
+      const favoriteGenres = Object.entries(genreCount)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 3)
+        .map(([name]) => name)
+
       setUserStats({
-        totalRatings: 0,
-        averageRating: 0,
-        favoriteGenres: ['Ação', 'Drama', 'Comédia'],
-        joinDate: new Date().toLocaleDateString('pt-BR', {
+        totalRatings,
+        averageRating,
+        favoriteGenres,
+        joinDate: currentUser.joinDate || new Date().toLocaleDateString('pt-BR', {
           year: 'numeric',
           month: 'long',
           day: 'numeric'
