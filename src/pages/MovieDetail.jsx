@@ -141,7 +141,11 @@ const MovieDetail = ({
           <div className="movie-meta">
             <div className="movie-rating">
               dsadas
-              
+              <Star size={20} fill="currentColor" />
+              <span>{movie.vote_average?.toFixed(1) || 'N/A'}</span>
+              {movie.vote_count && (
+                <span className="vote-count">({movie.vote_count} votos)</span>
+              )}
             </div>
             <div className="movie-year">
               <Calendar size={20} />
