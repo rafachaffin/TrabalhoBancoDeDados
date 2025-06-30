@@ -20,10 +20,10 @@ const AddRating = ({ currentUser }) => {
     setError('');
     setSearchResults([]);
     try {
-      const res = await fetch(`/api/movies?query=${encodeURIComponent(search)}`);
+      const res = await fetch(`/api/search?q=${encodeURIComponent(search)}`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Erro na busca');
-      setSearchResults(data);
+      setSearchResults(data.results || []);
     } catch (err) {
       setError(err.message || 'Erro na busca');
     } finally {
