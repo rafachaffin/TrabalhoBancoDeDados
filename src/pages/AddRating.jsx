@@ -1,9 +1,10 @@
+import { addMovieReview } from '../services/api';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Star } from 'lucide-react';
 import './AddRating.css';
 
-const AddRating = ({ onSaveRating }) => {
+const AddRating = ({ currentUser }) => {
   const [search, setSearch] = useState('');
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [rating, setRating] = useState(0);
@@ -43,14 +44,7 @@ const AddRating = ({ onSaveRating }) => {
       return;
     }
     try {
-      await onSaveRating({
-        movieId: selectedMovie.id,
-        movieTitle: selectedMovie.title,
-        moviePoster: selectedMovie.poster_path,
-        rating,
-        comment,
-        date: new Date().toISOString(),
-      });
+      await addMovieReview(selectedMovie.id, currentUser.id, rating, comment);
       navigate('/my-ratings');
     } catch (err) {
       setError('Erro ao salvar avaliação.');

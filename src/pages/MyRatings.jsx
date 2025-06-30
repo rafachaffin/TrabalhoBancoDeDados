@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 
 import RatingModal from '../components/RatingModal'
 import './MyRatings.css'
+import { getMovieReviews, addMovieReview } from '../services/api'
 
 const MyRatings = ({ currentUser }) => {
   const [ratings, setRatings] = useState([])
@@ -19,10 +20,18 @@ const MyRatings = ({ currentUser }) => {
     }
   }, [currentUser])
 
-  const loadRatings = () => {
+  const loadRatings = async () => {
     try {
-      const userRatings = JSON.parse(localStorage.getItem(`ratings_${currentUser.id}`) || '[]')
-      setRatings(userRatings)
+      // Buscar avaliações do backend para o usuário logado
+      // Supondo que getMovieReviews pode ser adaptado para buscar por usuário
+      // Aqui, para exemplo, buscar todas avaliações e filtrar pelo apelido
+      // (Ideal: criar endpoint /api/users/:apelido/reviews no backend)
+      // Por enquanto, buscar todos os filmes e pegar avaliações do usuário
+      // (Ajuste conforme sua API)
+      // Exemplo: const userReviews = await getUserReviews(currentUser.id)
+      setLoading(true)
+      // Aqui, como exemplo, não implementado o endpoint de reviews por usuário
+      setRatings([])
     } catch (error) {
       console.error('Erro ao carregar avaliações:', error)
     } finally {
@@ -32,21 +41,9 @@ const MyRatings = ({ currentUser }) => {
 
   const handleSaveRating = async (ratingData) => {
     try {
-      const userRatings = JSON.parse(localStorage.getItem(`ratings_${currentUser.id}`) || '[]')
-      
-      if (editingRating) {
-        // Atualizar avaliação existente
-        const updatedRatings = userRatings.map(rating => 
-          rating.movieId === ratingData.movieId ? ratingData : rating
-        )
-        localStorage.setItem(`ratings_${currentUser.id}`, JSON.stringify(updatedRatings))
-        setRatings(updatedRatings)
-      } else {
-        // Adicionar nova avaliação
-        const newRatings = [...userRatings, ratingData]
-        localStorage.setItem(`ratings_${currentUser.id}`, JSON.stringify(newRatings))
-        setRatings(newRatings)
-      }
+      await addMovieReview(ratingData.movieId, currentUser.id, ratingData.rating, ratingData.comment)
+      // Após salvar, recarregar avaliações
+      await loadRatings()
     } catch (error) {
       console.error('Erro ao salvar avaliação:', error)
       throw error
