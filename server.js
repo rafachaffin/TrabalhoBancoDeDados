@@ -1,6 +1,6 @@
 /**
  * Server
- * Servidor Express otimizado com rotas separadas e middlewares
+ * Servidor Express otimizado com arquitetura MVC
  */
 
 import path from 'path';
@@ -14,9 +14,16 @@ import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 import morgan from 'morgan';
 
-// Importações de rotas e middlewares
-import { errorHandler, notFoundHandler } from './backend/middleware/errorHandler.js';
-import DatabaseService from './backend/services/database-service.js';
+// Importações de middlewares
+import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
+
+// Importações de Models
+import { databaseModel } from './models/DatabaseModel.js';
+
+// Importações de Controllers
+import { movieController } from './controllers/MovieController.js';
+import { userController } from './controllers/UserController.js';
+import { searchController } from './controllers/SearchController.js';
 
 // Configuração do __dirname para ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -28,9 +35,6 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 const isDevelopment = process.env.NODE_ENV !== 'production';
-
-// Inicializa o serviço de banco de dados
-const dbService = new DatabaseService();
 
 // Rate limiting
 const limiter = rateLimit({
@@ -51,7 +55,6 @@ app.use(helmet({
       fontSrc: ["'self'", "https://fonts.gstatic.com"],
       imgSrc: ["'self'", "data:", "https:", "http:"],
       scriptSrc: ["'self'", "'unsafe-inline'"],
-      connectSrc: ["'self'", "https://api.themoviedb.org"]
     }
   }
 }));
@@ -75,36 +78,29 @@ app.use('/api/', limiter);
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Servir arquivos estáticos do backend
-app.use('/backend', express.static(path.join(__dirname, 'backend')));
-
 // Função para inicializar o servidor
 async function startServer() {
   try {
     // Inicializa o banco de dados
-    await dbService.initialize();
+    await databaseModel.initialize();
 
-    // Importa rotas após inicialização do banco
-    const movieRoutes = (await import('./backend/routes/movies.js')).default;
-    const searchRoutes = (await import('./backend/routes/search.js')).default;
-    const authRoutes = (await import('./backend/routes/auth.js')).default;
-
-    // Rotas da API com injeção de dependência
-    app.use('/api/movies', movieRoutes(dbService));
-    app.use('/api/search', searchRoutes(dbService));
-    app.use('/api/auth', authRoutes(dbService));
+    // Configura rotas dos Controllers
+    app.use('/api/movies', movieController.getRouter());
+    app.use('/api/auth', userController.getRouter());
+    app.use('/api/search', searchController.getRouter());
 
     // Rota de health check
     app.get('/health', async (req, res) => {
       try {
         // Verifica conexão com banco de dados
-        await dbService.initialize();
+        await databaseModel.initialize();
         res.json({
           status: 'OK',
           timestamp: new Date().toISOString(),
           uptime: process.uptime(),
           environment: process.env.NODE_ENV || 'development',
-          database: 'connected'
+          database: 'connected',
+          architecture: 'MVC'
         });
       } catch (error) {
         res.status(503).json({
@@ -113,6 +109,7 @@ async function startServer() {
           uptime: process.uptime(),
           environment: process.env.NODE_ENV || 'development',
           database: 'disconnected',
+          architecture: 'MVC',
           error: error.message
         });
       }
@@ -122,24 +119,33 @@ async function startServer() {
     app.get('/api/info', (req, res) => {
       res.json({
         name: 'Cineboxd API',
-        version: '1.0.0',
-        description: 'API para catálogo de filmes',
+        version: '2.0.0',
+        description: 'API para catálogo de filmes com arquitetura MVC',
+        architecture: 'MVC (Model-View-Controller)',
         endpoints: {
           movies: '/api/movies',
+          auth: '/api/auth',
           search: '/api/search',
           health: '/health'
-        }
+        },
+        models: ['MovieModel', 'UserModel', 'ReviewModel', 'DatabaseModel'],
+        controllers: ['MovieController', 'UserController', 'SearchController']
       });
     });
 
     // Rota de estatísticas
     app.get('/api/stats', async (req, res) => {
       try {
-        const stats = await dbService.getStats();
-        res.json(stats);
+        const stats = await databaseModel.getStats();
+        res.json({
+          success: true,
+          data: stats,
+          architecture: 'MVC'
+        });
       } catch (error) {
         console.error('Erro ao obter estatísticas:', error);
         res.status(500).json({ 
+          success: false,
           error: 'Erro interno do servidor',
           message: error.message 
         });
@@ -169,6 +175,7 @@ async function startServer() {
     app.listen(PORT, () => {
       console.log(`🚀 Servidor rodando na porta ${PORT}`);
       console.log(`📊 Ambiente: ${process.env.NODE_ENV || 'development'}`);
+      console.log(`🏗️  Arquitetura: MVC`);
       console.log(`🔗 Health check: http://localhost:${PORT}/health`);
       if (isDevelopment) {
         console.log(`🌐 Frontend: http://localhost:5173`);
