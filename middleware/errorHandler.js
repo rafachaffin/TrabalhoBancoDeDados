@@ -22,7 +22,7 @@ export const asyncHandler = (fn) => {
  * @param {Function} next - Próximo middleware
  */
 export const errorHandler = (err, req, res, next) => {
-  console.error('❌ Erro:', err);
+  console.error('Erro:', err);
 
   // Erro de validação
   if (err.name === 'ValidationError') {

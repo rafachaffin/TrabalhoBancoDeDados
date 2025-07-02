@@ -22,8 +22,10 @@ class ReviewModel {
    */
   async addReview(reviewData) {
     try {
+      console.log('addReview - Dados recebidos:', reviewData);
       const { movieId, apelido, nota, comentario } = reviewData;
       if (!movieId || !apelido || !nota) {
+        console.warn('addReview - Campos obrigatórios faltando:', { movieId, apelido, nota });
         throw new Error('ID do filme, apelido e nota são obrigatórios');
       }
       // Busca o próximo ID_Avaliacao para esse usuário+filme
@@ -32,57 +34,17 @@ class ReviewModel {
         [movieId, apelido]
       );
       const nextId = (result[0]?.maxId || 0) + 1;
+      console.log('addReview - Próximo ID_Avaliacao:', nextId);
       const sql = `
         INSERT INTO Avalia (ID_Avaliacao, Nota, Review, Data_Avaliacao, ID_Filme, Apelido)
         VALUES (?, ?, ?, NOW(), ?, ?)
       `;
-      return await this.db.insert(sql, [nextId, nota, comentario, movieId, apelido]);
+      console.log('addReview - Executando SQL:', sql, [nextId, nota, comentario, movieId, apelido]);
+      const insertResult = await this.db.insert(sql, [nextId, nota, comentario, movieId, apelido]);
+      console.log('addReview - Resultado da inserção:', insertResult);
+      return insertResult;
     } catch (error) {
       console.error('Erro ao adicionar avaliação:', error);
-      throw error;
-    }
-  }
-
-  /**
-   * Atualiza uma avaliação existente
-   * @param {number} movieId - ID do filme
-   * @param {string} apelido - Apelido do usuário
-   * @param {number} idAvaliacao - ID da avaliação
-   * @param {Object} updateData - Dados para atualizar
-   * @param {number} updateData.nota - Nova nota
-   * @param {string} updateData.comentario - Novo comentário
-   * @returns {Promise<Object>} Resultado da atualização
-   */
-  async updateReview(movieId, apelido, idAvaliacao, updateData) {
-    try {
-      const { nota, comentario } = updateData;
-      // Verifica se a avaliação existe
-      const existingReview = await this.getUserMovieReview(movieId, apelido, idAvaliacao);
-      if (!existingReview) {
-        throw new Error('Avaliação não encontrada');
-      }
-      const updates = [];
-      const params = [];
-      if (nota !== undefined) {
-        updates.push('Nota = ?');
-        params.push(nota);
-      }
-      if (comentario !== undefined) {
-        updates.push('Review = ?');
-        params.push(comentario);
-      }
-      if (updates.length === 0) {
-        throw new Error('Nenhum dado para atualizar');
-      }
-      params.push(movieId, apelido, idAvaliacao);
-      const sql = `UPDATE Avalia SET ${updates.join(', ')} WHERE ID_Filme = ? AND Apelido = ? AND ID_Avaliacao = ?`;
-      const result = await this.db.update(sql, params);
-      if (result.affectedRows === 0) {
-        throw new Error('Falha ao atualizar avaliação');
-      }
-      return result;
-    } catch (error) {
-      console.error('Erro ao atualizar avaliação:', error);
       throw error;
     }
   }
@@ -108,32 +70,6 @@ class ReviewModel {
     } catch (error) {
       console.error('Erro ao excluir avaliação:', error);
       throw error;
-    }
-  }
-
-  /**
-   * Busca avaliação específica de um usuário para um filme
-   * @param {number} movieId - ID do filme
-   * @param {string} apelido - Apelido do usuário
-   * @param {number} idAvaliacao - ID da avaliação
-   * @returns {Promise<Object|null>} Avaliação do usuário
-   */
-  async getUserMovieReview(movieId, apelido, idAvaliacao) {
-    try {
-      const sql = `
-        SELECT 
-          ID_Avaliacao,
-          Nota,
-          Review,
-          Data_Avaliacao
-        FROM Avalia
-        WHERE ID_Filme = ? AND Apelido = ? AND ID_Avaliacao = ?
-      `;
-      const reviews = await this.db.query(sql, [movieId, apelido, idAvaliacao]);
-      return reviews.length > 0 ? reviews[0] : null;
-    } catch (error) {
-      console.error('Erro ao buscar avaliação do usuário:', error);
-      throw new Error('Falha ao buscar avaliação do usuário');
     }
   }
 
@@ -190,7 +126,7 @@ class ReviewModel {
         }
       };
     } catch (error) {
-      console.error('❌ Erro ao buscar avaliações do filme:', error);
+      console.error('Erro ao buscar avaliações do filme:', error);
       throw new Error('Falha ao carregar avaliações do filme');
     }
   }
@@ -242,135 +178,8 @@ class ReviewModel {
         }
       };
     } catch (error) {
-      console.error('❌ Erro ao buscar avaliações do usuário:', error);
+      console.error('Erro ao buscar avaliações do usuário:', error);
       throw new Error('Falha ao carregar avaliações do usuário');
-    }
-  }
-
-  /**
-   * Obtém estatísticas das avaliações de um filme
-   * @param {number} movieId - ID do filme
-   * @returns {Promise<Object>} Estatísticas das avaliações
-   */
-  async getMovieReviewStats(movieId) {
-    try {
-      const sql = `
-        SELECT 
-          COUNT(*) as total_reviews,
-          AVG(nota) as average_rating,
-          MIN(nota) as min_rating,
-          MAX(nota) as max_rating,
-          STDDEV(nota) as rating_std
-        FROM avalia
-        WHERE ID_Filme = ?
-      `;
-
-      const [stats] = await this.db.query(sql, [movieId]);
-
-      // Distribuição das notas
-      const distributionSql = `
-        SELECT 
-          nota,
-          COUNT(*) as count
-        FROM avalia
-        WHERE ID_Filme = ?
-        GROUP BY nota
-        ORDER BY nota
-      `;
-
-      const distribution = await this.db.query(distributionSql, [movieId]);
-
-      return {
-        totalReviews: stats.total_reviews,
-        averageRating: parseFloat(stats.average_rating || 0).toFixed(2),
-        minRating: stats.min_rating,
-        maxRating: stats.max_rating,
-        ratingStd: parseFloat(stats.rating_std || 0).toFixed(2),
-        distribution
-      };
-    } catch (error) {
-      console.error('❌ Erro ao obter estatísticas das avaliações:', error);
-      throw new Error('Falha ao obter estatísticas das avaliações');
-    }
-  }
-
-  /**
-   * Obtém estatísticas gerais das avaliações
-   * @returns {Promise<Object>} Estatísticas gerais
-   */
-  async getReviewStats() {
-    try {
-      const stats = {};
-      
-      // Total de avaliações
-      const [totalReviews] = await this.db.query('SELECT COUNT(*) as count FROM avalia');
-      stats.totalReviews = totalReviews.count;
-      
-      // Média geral
-      const [avgRating] = await this.db.query('SELECT AVG(nota) as average FROM avalia');
-      stats.averageRating = parseFloat(avgRating.average || 0).toFixed(2);
-      
-      // Avaliações por mês (últimos 12 meses)
-      const monthlyStats = await this.db.query(`
-        SELECT 
-          DATE_FORMAT(Data_Avaliacao, '%Y-%m') as month,
-          COUNT(*) as count,
-          AVG(nota) as average
-        FROM avalia
-        WHERE Data_Avaliacao >= DATE_SUB(NOW(), INTERVAL 12 MONTH)
-        GROUP BY DATE_FORMAT(Data_Avaliacao, '%Y-%m')
-        ORDER BY month DESC
-      `);
-      stats.monthlyStats = monthlyStats;
-      
-      // Distribuição geral das notas
-      const ratingDistribution = await this.db.query(`
-        SELECT 
-          nota,
-          COUNT(*) as count,
-          ROUND(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM avalia), 2) as percentage
-        FROM avalia
-        GROUP BY nota
-        ORDER BY nota
-      `);
-      stats.ratingDistribution = ratingDistribution;
-      
-      return stats;
-    } catch (error) {
-      console.error('❌ Erro ao obter estatísticas das avaliações:', error);
-      throw new Error('Falha ao obter estatísticas das avaliações');
-    }
-  }
-
-  /**
-   * Busca avaliações recentes
-   * @param {number} limit - Limite de resultados
-   * @returns {Promise<Array>} Avaliações recentes
-   */
-  async getRecentReviews() {
-    try {
-      const sql = `
-        SELECT 
-          av.ID_Avaliacao,
-          av.Nota,
-          av.Review,
-          av.Data_Avaliacao,
-          u.apelido,
-          u.nome,
-          f.ID_Filme,
-          f.Titulo,
-          f.Url_Poster
-        FROM avalia av
-        JOIN usuario u ON av.apelido = u.apelido
-        JOIN filme f ON av.ID_Filme = f.ID_Filme
-        ORDER BY av.Data_Avaliacao DESC
-      `;
-
-      const reviews = await this.db.query(sql, [limit]);
-      return reviews;
-    } catch (error) {
-      console.error('❌ Erro ao buscar avaliações recentes:', error);
-      throw new Error('Falha ao carregar avaliações recentes');
     }
   }
 

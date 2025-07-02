@@ -47,7 +47,7 @@ const Profile = ({ currentUser }) => {
                 <User size={20} />
                 <div>
                   <label>Nome</label>
-                  <span>{currentUser.name}</span>
+                  <span>{currentUser.nome}</span>
                 </div>
               </div>
               <div className="info-item">
@@ -61,37 +61,14 @@ const Profile = ({ currentUser }) => {
                 <User size={20} />
                 <div>
                   <label>Apelido</label>
-                  <span>{currentUser.nickname || '-'}</span>
+                  <span>{currentUser.apelido || '-'}</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Seção de Estatísticas */}
-        <div className="profile-section">
-          <h2>Minhas Estatísticas</h2>
-          <div className="stats-grid">
-            <div className="stat-card">
-              <div className="stat-icon">
-                <Star size={24} />
-              </div>
-              <div className="stat-content">
-                <h3>{userStats.totalRatings}</h3>
-                <p>Filmes Avaliados</p>
-              </div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-icon">
-                <Star size={24} />
-              </div>
-              <div className="stat-content">
-                <h3>{userStats.averageRating}</h3>
-                <p>Média das Avaliações</p>
-              </div>
-            </div>
-          </div>
-        </div>
+      
       </div>
     </div>
   )

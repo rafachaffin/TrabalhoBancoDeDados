@@ -43,16 +43,19 @@ const Login = () => {
       })
 
       const data = await response.json()
+      console.log('RESPOSTA DO LOGIN:', data)
 
       if (!response.ok) {
         throw new Error(data.error || 'Erro ao fazer login')
       }
 
+      console.log('DADOS DO LOGIN:', data)
+
       // Usar a função login do contexto
       const user = {
-        name: data.data.Nome || data.data.name,
-        email: data.data.Email || data.data.email,
-        nickname: data.data.Apelido || data.data.apelido
+        nome: data.data.nome,
+        email: data.data.email,
+        apelido: data.data.apelido
       }
       login(user)
       navigate('/')

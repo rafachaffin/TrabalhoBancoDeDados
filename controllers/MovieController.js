@@ -42,10 +42,13 @@ class MovieController {
     this.router.put('/:id/reviews', validateMovieId, asyncHandler(this.updateMovieReview.bind(this)));
 
     // Excluir avaliação do filme
-    this.router.delete('/:id/reviews/:apelido', validateMovieId, asyncHandler(this.deleteMovieReview.bind(this)));
+    this.router.delete('/:id/reviews/:apelido/:idAvaliacao', validateMovieId, asyncHandler(this.deleteMovieReview.bind(this)));
 
     // Estatísticas do filme
     this.router.get('/:id/stats', validateMovieId, asyncHandler(this.getMovieStats.bind(this)));
+
+    // Buscar avaliações recentes (todas as avaliações feitas)
+    this.router.get('/reviews/all', asyncHandler(this.getAllReviews.bind(this)));
   }
 
   /**
@@ -198,6 +201,7 @@ class MovieController {
    */
   async addMovieReview(req, res) {
     try {
+      console.log('Recebendo requisição para adicionar avaliação:', req.body, req.params);
       const { id } = req.params;
       const { apelido, nota, comentario } = req.body;
 
@@ -208,8 +212,10 @@ class MovieController {
         nota,
         comentario
       });
+      console.log('Resultado da validação:', validation);
 
       if (!validation.isValid) {
+        console.warn('Dados inválidos ao tentar adicionar avaliação:', validation.errors);
         return res.status(400).json({
           success: false,
           error: 'Dados inválidos',
@@ -223,6 +229,7 @@ class MovieController {
         nota: parseInt(nota),
         comentario
       });
+      console.log('Resultado da inserção da avaliação:', result);
 
       res.status(201).json({
         success: true,
@@ -230,6 +237,7 @@ class MovieController {
         data: result
       });
     } catch (error) {
+      console.error('Erro ao adicionar avaliação:', error);
       const statusCode = error.message.includes('já avaliou') ? 409 : 500;
       res.status(statusCode).json({
         success: false,
@@ -291,8 +299,8 @@ class MovieController {
    */
   async deleteMovieReview(req, res) {
     try {
-      const { id, apelido } = req.params;
-      const result = await reviewModel.deleteReview(parseInt(id), apelido);
+      const { id, apelido, idAvaliacao } = req.params;
+      const result = await reviewModel.deleteReview(parseInt(id), apelido, parseInt(idAvaliacao));
 
       res.json({
         success: true,
@@ -328,6 +336,27 @@ class MovieController {
         success: false,
         error: error.message,
         message: 'Erro ao obter estatísticas do filme'
+      });
+    }
+  }
+
+  /**
+   * Retorna todas as avaliações feitas
+   * @param {Object} req - Requisição Express
+   * @param {Object} res - Resposta Express
+   */
+  async getAllReviews(req, res) {
+    try {
+      const reviews = await reviewModel.getRecentReviews();
+      res.json({
+        success: true,
+        data: reviews
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        error: error.message,
+        message: 'Erro ao buscar todas as avaliações'
       });
     }
   }

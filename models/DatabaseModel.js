@@ -42,10 +42,10 @@ class DatabaseModel {
       await this.pool.getConnection();
       this.isInitialized = true;
       
-      console.log('✅ Conexão com banco de dados estabelecida');
+      console.log('Conexão com banco de dados estabelecida');
       return this.pool;
     } catch (error) {
-      console.error('❌ Erro ao conectar com banco de dados:', error);
+      console.error('Erro ao conectar com banco de dados:', error);
       throw new Error('Falha na conexão com banco de dados');
     }
   }
@@ -65,7 +65,7 @@ class DatabaseModel {
       const [rows] = await this.pool.execute(sql, params);
       return rows;
     } catch (error) {
-      console.error('❌ Erro na query:', error);
+      console.error('Erro na query:', error);
       throw new Error(`Erro na execução da query: ${error.message}`);
     }
   }
@@ -88,7 +88,7 @@ class DatabaseModel {
         affectedRows: result.affectedRows
       };
     } catch (error) {
-      console.error('❌ Erro na inserção:', error);
+      console.error('Erro na inserção:', error);
       throw new Error(`Erro na inserção: ${error.message}`);
     }
   }
@@ -111,7 +111,7 @@ class DatabaseModel {
         changedRows: result.changedRows
       };
     } catch (error) {
-      console.error('❌ Erro na atualização:', error);
+      console.error('Erro na atualização:', error);
       throw new Error(`Erro na atualização: ${error.message}`);
     }
   }
@@ -133,7 +133,7 @@ class DatabaseModel {
         affectedRows: result.affectedRows
       };
     } catch (error) {
-      console.error('❌ Erro na exclusão:', error);
+      console.error('Erro na exclusão:', error);
       throw new Error(`Erro na exclusão: ${error.message}`);
     }
   }
@@ -152,7 +152,7 @@ class DatabaseModel {
       await connection.beginTransaction();
       return connection;
     } catch (error) {
-      console.error('❌ Erro ao iniciar transação:', error);
+      console.error('Erro ao iniciar transação:', error);
       throw new Error(`Erro ao iniciar transação: ${error.message}`);
     }
   }
@@ -166,7 +166,7 @@ class DatabaseModel {
       await connection.commit();
       connection.release();
     } catch (error) {
-      console.error('❌ Erro ao confirmar transação:', error);
+      console.error('Erro ao confirmar transação:', error);
       throw new Error(`Erro ao confirmar transação: ${error.message}`);
     }
   }
@@ -180,7 +180,7 @@ class DatabaseModel {
       await connection.rollback();
       connection.release();
     } catch (error) {
-      console.error('❌ Erro ao reverter transação:', error);
+      console.error('Erro ao reverter transação:', error);
       throw new Error(`Erro ao reverter transação: ${error.message}`);
     }
   }
@@ -192,7 +192,7 @@ class DatabaseModel {
     if (this.pool) {
       await this.pool.end();
       this.isInitialized = false;
-      console.log('🔌 Conexão com banco de dados fechada');
+      console.log('Conexão com banco de dados fechada');
     }
   }
 
@@ -222,7 +222,7 @@ class DatabaseModel {
       
       return stats;
     } catch (error) {
-      console.error('❌ Erro ao obter estatísticas:', error);
+      console.error('Erro ao obter estatísticas:', error);
       throw new Error('Erro ao obter estatísticas do banco de dados');
     }
   }

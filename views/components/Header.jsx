@@ -45,7 +45,7 @@ const Header = ({ currentUser, onLogout }) => {
                 title="Meu Perfil"
               >
                 <User size={20} />
-                <span>{currentUser.name}</span>
+                <span>{currentUser.nome}</span>
               </Link>
               <button className="logout-btn" onClick={onLogout} title="Sair">
                 <LogOut size={16} />

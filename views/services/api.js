@@ -27,12 +27,12 @@ api.interceptors.request.use(
   (config) => {
     // Log apenas em desenvolvimento
     if (import.meta.env.DEV) {
-      console.log(`🚀 ${config.method?.toUpperCase()} ${config.url}`)
+      console.log(`${config.method?.toUpperCase()} ${config.url}`)
     }
     return config
   },
   (error) => {
-    console.error('❌ Erro na requisição:', error)
+    console.error('Erro na requisição:', error)
     return Promise.reject(new ApiError('Erro na requisição', null, error))
   }
 )
@@ -42,7 +42,7 @@ api.interceptors.response.use(
   (response) => {
     // Log apenas em desenvolvimento
     if (import.meta.env.DEV) {
-      console.log(`✅ ${response.status} ${response.config.url}`)
+      console.log(`${response.status} ${response.config.url}`)
     }
     return response
   },
@@ -61,7 +61,7 @@ api.interceptors.response.use(
       errorMessage = error.message
     }
     
-    console.error('❌ Erro na resposta:', errorMessage)
+    console.error('Erro na resposta:', errorMessage)
     return Promise.reject(new ApiError(errorMessage, status, response?.data))
   }
 )
@@ -196,6 +196,7 @@ export const authService = {
 }
 
 export async function addMovieReview(movieId, apelido, nota, comentario) {
+  
   return api.post(`/api/movies/${movieId}/reviews`, { apelido, nota, comentario });
 }
 
@@ -205,8 +206,8 @@ export async function getUserReviews(apelido) {
   return data
 }
 
-export async function deleteMovieReview(movieId, apelido) {
-  return api.delete(`/api/movies/${movieId}/reviews/${apelido}`);
+export async function deleteMovieReview(movieId, apelido, idAvaliacao) {
+  return api.delete(`/api/movies/${movieId}/reviews/${apelido}/${idAvaliacao}`);
 }
 
 export { ApiError }

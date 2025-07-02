@@ -173,27 +173,27 @@ async function startServer() {
 
     // Inicia o servidor
     app.listen(PORT, () => {
-      console.log(`🚀 Servidor rodando na porta ${PORT}`);
-      console.log(`📊 Ambiente: ${process.env.NODE_ENV || 'development'}`);
-      console.log(`🏗️  Arquitetura: MVC`);
-      console.log(`🔗 Health check: http://localhost:${PORT}/health`);
+      console.log(`Servidor rodando na porta ${PORT}`);
+      console.log(`Ambiente: ${process.env.NODE_ENV || 'development'}`);
+      console.log(`Arquitetura: MVC`);
+      console.log(`Health check: http://localhost:${PORT}/health`);
       if (isDevelopment) {
-        console.log(`🌐 Frontend: http://localhost:5173`);
+        console.log(`Frontend: http://localhost:5173`);
       }
     });
   } catch (error) {
-    console.error('❌ Erro ao inicializar servidor:', error);
+    console.error('Erro ao inicializar servidor:', error);
     process.exit(1);
   }
 }
 
 // Tratamento de erros não capturados
 process.on('unhandledRejection', (reason, promise) => {
-  console.error('❌ Unhandled Rejection at:', promise, 'reason:', reason);
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
 });
 
 process.on('uncaughtException', (error) => {
-  console.error('❌ Uncaught Exception:', error);
+  console.error('Uncaught Exception:', error);
   process.exit(1);
 });
 

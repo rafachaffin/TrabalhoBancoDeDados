@@ -27,7 +27,7 @@ const RatingModal = ({ movie, isOpen, onClose, onSaveRating, currentUser, curren
     setLoading(true)
     try {
       const movieId = movie?.id ?? null;
-      const apelido = currentUser?.id ?? null;
+      const apelido = currentUser?.apelido ?? null;
       const nota = rating ?? null;
       const comentario = comment !== undefined ? comment : null;
       await addMovieReview(movieId, apelido, nota, comentario);

@@ -28,7 +28,7 @@ class MovieModel {
       const movies = await this.db.query(sql, params);
       return movies.map(movie => this.processMovieData(movie));
     } catch (error) {
-      console.error('❌ Erro ao buscar filmes por categoria:', error);
+      console.error('Erro ao buscar filmes por categoria:', error);
       throw new Error(`Falha ao carregar filmes da categoria ${category}`);
     }
   }
@@ -46,7 +46,7 @@ class MovieModel {
       }
       return this.processMovieData(movies[0]);
     } catch (error) {
-      console.error('❌ Erro ao buscar filme por ID:', error);
+      console.error('Erro ao buscar filme por ID:', error);
       throw new Error(`Falha ao carregar filme com ID ${id}`);
     }
   }
@@ -61,7 +61,7 @@ class MovieModel {
       const cast = await this.db.query(dbQueries.GET_MOVIE_CAST, [movieId]);
       return cast;
     } catch (error) {
-      console.error('❌ Erro ao buscar elenco:', error);
+      console.error('Erro ao buscar elenco:', error);
       throw new Error('Falha ao carregar elenco do filme');
     }
   }
@@ -90,7 +90,7 @@ class MovieModel {
       const reviews = await this.db.query(sql, [movieId]);
       return reviews;
     } catch (error) {
-      console.error('❌ Erro ao buscar avaliações:', error);
+      console.error('Erro ao buscar avaliações:', error);
       throw new Error('Falha ao carregar avaliações do filme');
     }
   }
@@ -123,7 +123,7 @@ class MovieModel {
         poster: review.Url_Poster
       }));
     } catch (error) {
-      console.error('❌ Erro ao buscar avaliações do usuário:', error);
+      console.error('Erro ao buscar avaliações do usuário:', error);
       throw new Error('Falha ao carregar avaliações do usuário');
     }
   }
@@ -149,7 +149,7 @@ class MovieModel {
       const result = await this.db.insert(dbQueries.ADD_MOVIE_REVIEW, [movieId, apelido, nota, comentario]);
       return result;
     } catch (error) {
-      console.error('❌ Erro ao adicionar avaliação:', error);
+      console.error('Erro ao adicionar avaliação:', error);
       throw error;
     }
   }
@@ -165,7 +165,7 @@ class MovieModel {
       const reviews = await this.db.query(dbQueries.GET_USER_MOVIE_REVIEW, [movieId, apelido]);
       return reviews.length > 0 ? reviews[0] : null;
     } catch (error) {
-      console.error('❌ Erro ao buscar avaliação do usuário:', error);
+      console.error('Erro ao buscar avaliação do usuário:', error);
       throw new Error('Falha ao buscar avaliação do usuário');
     }
   }
@@ -184,7 +184,7 @@ class MovieModel {
       }
       return result;
     } catch (error) {
-      console.error('❌ Erro ao excluir avaliação:', error);
+      console.error('Erro ao excluir avaliação:', error);
       throw error;
     }
   }
@@ -232,7 +232,7 @@ class MovieModel {
       );
       return processedMovies.map(movie => this.processMovieData(movie));
     } catch (error) {
-      console.error('❌ Erro na busca de filmes:', error);
+      console.error('Erro na busca de filmes:', error);
       throw new Error('Falha ao realizar busca');
     }
   }
@@ -290,7 +290,7 @@ class MovieModel {
       
       return stats;
     } catch (error) {
-      console.error('❌ Erro ao obter estatísticas dos filmes:', error);
+      console.error('Erro ao obter estatísticas dos filmes:', error);
       throw new Error('Falha ao obter estatísticas dos filmes');
     }
   }

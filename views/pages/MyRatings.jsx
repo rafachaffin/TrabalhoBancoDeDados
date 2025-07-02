@@ -23,8 +23,18 @@ const MyRatings = ({ currentUser }) => {
   const loadRatings = async () => {
     try {
       setLoading(true)
-      const userReviews = await getUserReviews(currentUser.nickname)
-      setRatings(userReviews)
+      const userReviews = await getUserReviews(currentUser.apelido)
+      // Mapeamento dos campos do backend para o frontend
+      const mappedReviews = userReviews.map(r => ({
+        movieId: r.ID_Filme || r.movieId,
+        movieTitle: r.Titulo || r.movieTitle,
+        moviePoster: r.Url_Poster || r.moviePoster,
+        rating: r.Nota || r.rating,
+        comment: r.Review || r.comment,
+        date: r.Data_Avaliacao || r.date,
+        idAvaliacao: r.ID_Avaliacao || r.idAvaliacao
+      }))
+      setRatings(mappedReviews)
     } catch (error) {
       console.error('Erro ao carregar avaliações:', error)
     } finally {
@@ -33,9 +43,10 @@ const MyRatings = ({ currentUser }) => {
   }
 
   const handleSaveRating = async (ratingData) => {
+    console.log('currentUser:', currentUser);
+    console.log('nickname enviado:', currentUser?.apelido);
     try {
-      await addMovieReview(ratingData.movieId, currentUser.nickname, ratingData.rating, ratingData.comment)
-      // Após salvar, recarregar avaliações
+      await addMovieReview(ratingData.movieId, currentUser.apelido, ratingData.rating, ratingData.comment)
       await loadRatings()
     } catch (error) {
       console.error('Erro ao salvar avaliação:', error)
@@ -43,10 +54,10 @@ const MyRatings = ({ currentUser }) => {
     }
   }
 
-  const handleDeleteRating = async (movieId) => {
+  const handleDeleteRating = async (movieId, idAvaliacao) => {
     if (window.confirm('Tem certeza que deseja excluir esta avaliação?')) {
       try {
-        await deleteMovieReview(movieId, currentUser.nickname);
+        await deleteMovieReview(movieId, currentUser.apelido, idAvaliacao);
         await loadRatings();
       } catch (error) {
         console.error('Erro ao excluir avaliação:', error);
@@ -103,9 +114,7 @@ const MyRatings = ({ currentUser }) => {
       <div className="ratings-header">
         <h1>Minhas Avaliações</h1>
         <p>Gerencie suas avaliações de filmes</p>
-        <button className="add-rating-btn" onClick={() => navigate('/add-rating')}>
-          Adicionar Avaliação
-        </button>
+        
       </div>
 
       {ratings.length === 0 ? (
@@ -113,14 +122,11 @@ const MyRatings = ({ currentUser }) => {
           <div className="empty-icon">⭐</div>
           <h3>Nenhuma avaliação ainda</h3>
           <p>Comece avaliando seus filmes favoritos!</p>
-          <button className="add-rating-btn" onClick={() => navigate('/add-rating')}>
-            Fazer Primeira Avaliação
-          </button>
         </div>
       ) : (
         <div className="ratings-grid">
           {ratings.map((rating) => (
-            <div key={rating.movieId} className="rating-card">
+            <div key={rating.movieId + '-' + rating.idAvaliacao} className="rating-card">
               <div className="rating-movie-info">
                 <img
                   src={rating.moviePoster}
@@ -140,7 +146,7 @@ const MyRatings = ({ currentUser }) => {
                     <p className="rating-comment">{rating.comment}</p>
                   )}
                   <div className="rating-date">
-                    <Calendar size={14} />
+                    <Calendar size ={14} />
                     <span>{formatDate(rating.date)}</span>
                   </div>
                 </div>
@@ -149,7 +155,7 @@ const MyRatings = ({ currentUser }) => {
               <div className="rating-actions">
                 <button
                   className="delete-btn"
-                  onClick={() => handleDeleteRating(rating.movieId)}
+                  onClick={() => handleDeleteRating(rating.movieId, rating.idAvaliacao)}
                   title="Excluir avaliação"
                 >
                   <Trash2 size={16} />

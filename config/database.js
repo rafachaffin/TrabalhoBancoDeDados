@@ -37,9 +37,6 @@ export const dbQueries = {
   GET_USER_BY_APELIDO: 'SELECT * FROM Usuario WHERE Apelido = ?',
   GET_USER_BY_EMAIL: 'SELECT * FROM Usuario WHERE Email = ?',
   CREATE_USER: 'INSERT INTO Usuario (Apelido, Nome, Email, Senha) VALUES (?, ?, ?, ?)',
-  UPDATE_USER: 'UPDATE Usuario SET Nome = ?, Email = ? WHERE Apelido = ?',
-  DELETE_USER: 'DELETE FROM Usuario WHERE Apelido = ?',
-  
   // Queries de filme
   GET_ALL_MOVIES: `
     SELECT 
