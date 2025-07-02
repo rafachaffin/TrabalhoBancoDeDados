@@ -1,0 +1,38 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: cineboxd_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: cineboxd
+      MYSQL_USER: cineuser
+      MYSQL_PASSWORD: cinepass
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./Dump20250629:/docker-entrypoint-initdb.d
+    command: --default-authentication-plugin=mysql_native_password
+
+  backend:
+    build: ./backend
+    container_name: cineboxd_backend
+    restart: always
+    environment:
+      DB_HOST: mysql
+      DB_USER: cineuser
+      DB_PASSWORD: cinepass
+      DB_NAME: cineboxd
+    ports:
+      - "3001:3001"
+    depends_on:
+      - mysql
+
+  frontend:
+    build: ./src
+    container_name: cineboxd_frontend
+    restart: always
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend 

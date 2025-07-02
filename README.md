@@ -38,33 +38,97 @@ Um catálogo moderno e responsivo de filmes com funcionalidades avançadas de bu
 
 ## 📦 Instalação
 
-1. **Clone o repositório**
-```bash
-git clone https://github.com/rafachaffin/cineboxd.git
-cd cineboxd
-```
+### Pré-requisitos
 
-2. **Instale as dependências**
-```bash
-npm install
-```
+#### Com Docker (Recomendado)
+- [Docker](https://www.docker.com/products/docker-desktop)
+- [Docker Compose](https://docs.docker.com/compose/) (já incluso no Docker Desktop)
 
-3. **Configure o banco de dados**
-```bash
-# Configure as variáveis de ambiente
-cp .env.example .env
+#### Sem Docker (Manual)
+- [Node.js](https://nodejs.org/) (18+ recomendado)
+- [npm](https://www.npmjs.com/)
+- [MySQL](https://dev.mysql.com/downloads/mysql/) (8+)
 
-# Execute as migrações
-npm run db:migrate
+### Instalação com Docker (Recomendado)
 
-# Popule com dados de exemplo
-npm run db:seed
-```
+1. **Clone o repositório:**
+   ```sh
+   git clone <URL_DO_REPOSITORIO>
+   cd TrabalhoBancoDeDados
+   ```
 
-4. **Inicie o desenvolvimento**
-```bash
-npm run dev
-```
+2. **Suba os containers:**
+   ```sh
+   docker-compose up --build
+   ```
+   - Isso irá instalar dependências, subir o banco MySQL populado, backend e frontend.
+
+3. **Acesse o sistema:**
+   - Frontend: [http://localhost:5173](http://localhost:5173)
+   - Backend: [http://localhost:3001](http://localhost:3001)
+
+4. **Parar os containers:**
+   ```sh
+   docker-compose down
+   ```
+
+### Instalação Manual (Sem Docker)
+
+#### Banco de Dados
+
+1. Instale o MySQL e crie o banco:
+   ```sql
+   CREATE DATABASE cineboxd;
+   CREATE USER 'cineuser'@'%' IDENTIFIED BY 'cinepass';
+   GRANT ALL PRIVILEGES ON cineboxd.* TO 'cineuser'@'%';
+   FLUSH PRIVILEGES;
+   ```
+2. Importe os scripts SQL da pasta `Dump20250629`:
+   ```sh
+   mysql -u cineuser -p cineboxd < Dump20250629/cineboxd_db_ator.sql
+   mysql -u cineuser -p cineboxd < Dump20250629/cineboxd_db_atua.sql
+   mysql -u cineuser -p cineboxd < Dump20250629/cineboxd_db_avalia.sql
+   mysql -u cineuser -p cineboxd < Dump20250629/cineboxd_db_filme.sql
+   mysql -u cineuser -p cineboxd < Dump20250629/cineboxd_db_filme_genero.sql
+   mysql -u cineuser -p cineboxd < Dump20250629/cineboxd_db_filme_produtora.sql
+   mysql -u cineuser -p cineboxd < Dump20250629/cineboxd_db_genero.sql
+   mysql -u cineuser -p cineboxd < Dump20250629/cineboxd_db_produtora.sql
+   mysql -u cineuser -p cineboxd < Dump20250629/cineboxd_db_usuario.sql
+   ```
+
+#### Backend
+
+1. Entre na pasta do backend:
+   ```sh
+   cd backend
+   ```
+2. Instale as dependências:
+   ```sh
+   npm install
+   ```
+3. Configure a conexão com o banco em `database/connection.js` (ou via variáveis de ambiente):
+   - `DB_HOST`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`
+4. Inicie o backend:
+   ```sh
+   node ../server.js
+   ```
+   - (ou `npm start` se houver script no `package.json`)
+
+#### Frontend
+
+1. Volte para a raiz do projeto e entre na pasta do frontend:
+   ```sh
+   cd ../src
+   ```
+2. Instale as dependências:
+   ```sh
+   npm install
+   ```
+3. Inicie o frontend:
+   ```sh
+   npm run dev
+   ```
+   - O frontend estará disponível em [http://localhost:5173](http://localhost:5173)
 
 ## 🏗️ Estrutura do Projeto
 
